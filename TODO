@@ -1,0 +1,2 @@
+time variable tracklenmediginden queue'da gecirilen zamani eklemedim, active worker sayisini gosteren bir metric koydum
+cok gerekirse queue'ya konurken request modify edilir, created at variable konur, sonra cikinca metric olarak loglanir

@@ -33,8 +33,8 @@ func (r MerchantProductRepository) AddMerchantProduct(req models.Request, produc
 	merchantProduct := &models.MerchantProduct{
 		ProductID: productId,
 		MerchantID: merchantId, 
-		MerchantPrice: *req.Price,
-		MerchantStock: *req.Stock,
+		MerchantPrice: req.Price,
+		MerchantStock: req.Stock,
 	}
 
 	result := r.db.Create(merchantProduct)
@@ -44,6 +44,6 @@ func (r MerchantProductRepository) AddMerchantProduct(req models.Request, produc
 
 func (r MerchantProductRepository) UpdateMerchantProduct(req models.Request, productId int, merchantId int) error {
 	res := r.db.Model(&models.MerchantProduct{}).Where("product_id = ? AND merchant_id = ?", productId, merchantId)
-	res.Updates(models.MerchantProduct{MerchantPrice: *req.Price, MerchantStock: *req.Stock})
+	res.Updates(models.MerchantProduct{MerchantPrice: req.Price, MerchantStock: req.Stock})
 	return res.Error
 }

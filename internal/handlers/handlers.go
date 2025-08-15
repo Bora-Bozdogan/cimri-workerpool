@@ -17,7 +17,7 @@ func (h Handler) HandleWorkers() {
 	//create workers for each queue
 	h.service.CreateWorkers(20, "high")
 	h.service.CreateWorkers(10, "med")
-	h.service.CreateWorkers(5, "high")
+	h.service.CreateWorkers(5, "low")
 
 	h.service.BlockWorkers()
 }

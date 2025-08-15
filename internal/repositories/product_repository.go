@@ -39,11 +39,11 @@ func (r ProductRepository) ReadName(name string) *models.Product {
 func (r ProductRepository) AddProduct(req models.Request) error {
 	//create new product from request
 	product := &models.Product{
-		ProductName: *req.ProductName,
-		ProductDescription: *req.ProductDescription,
-		ProductImage: *req.ProductImage,
-		Popularity_score: *req.PopularityScore,
-		Urgency_score: *req.UrgencyScore,
+		ProductName: req.ProductName,
+		ProductDescription: req.ProductDescription,
+		ProductImage: req.ProductImage,
+		Popularity_score: req.PopularityScore,
+		Urgency_score: req.UrgencyScore,
 	}
 
 	//add to the right table
@@ -54,6 +54,6 @@ func (r ProductRepository) AddProduct(req models.Request) error {
 
 func (r ProductRepository) UpdateProduct(req models.Request) error {
 	res := r.db.Model(&models.Product{}).Where("name = ?", req.ProductName)
-	res.Updates(models.Product{ProductName: *req.ProductName, ProductDescription: *req.ProductDescription, ProductImage: *req.ProductImage})
+	res.Updates(models.Product{ProductName: req.ProductName, ProductDescription: req.ProductDescription, ProductImage: req.ProductImage})
 	return res.Error
 }

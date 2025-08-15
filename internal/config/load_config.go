@@ -8,10 +8,10 @@ import (
 
 type Config struct {
 	QueueParams struct {
-		Address  string `mapstructure:"db_addr"`
-		Password string `mapstructure:"db_pass"`
-		Number   int    `mapstructure:"db_num"`
-		Protocol int    `mapstructure:"db_protocol"`
+		Address  string `mapstructure:"queue_addr"`
+		Password string `mapstructure:"queue_pass"`
+		Number   int    `mapstructure:"queue_num"`
+		Protocol int    `mapstructure:"queue_protocol"`
 	} `mapstructure:"queue_params"`
 	ServerParams struct {
 		ListenPort string `mapstructure:"listen_port"`

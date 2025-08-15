@@ -1,0 +1,4 @@
+mock client to return faulty + valid requests - by mocking pullItem, remove db relation
+keep track of requests in client struct, expected and received, then check by comparing them
+
+remove table tests and just write a single testcase, keep track of invalid and valid request counts

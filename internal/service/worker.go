@@ -10,6 +10,7 @@ func (s ServicesFuncs) CallUpdateWorker(ctx context.Context, queueName string) {
 	for {
 		select {
 		case <-ctx.Done():
+			s.DecrementActiveWorkerCount()
 			return
 		default:
 			//pull from queue
@@ -20,7 +21,7 @@ func (s ServicesFuncs) CallUpdateWorker(ctx context.Context, queueName string) {
 			} else {
 				req := &models.Request{}
 				json.Unmarshal([]byte(res), req)
-				s.ProcessRequest(*req)	
+				s.ProcessRequest(*req)
 			}
 		}
 	}
@@ -28,7 +29,7 @@ func (s ServicesFuncs) CallUpdateWorker(ctx context.Context, queueName string) {
 
 func (s ServicesFuncs) ProcessRequest(m models.Request) {
 	//check if product exists, if no add, if yes, update
-	product := s.productRepo.ReadName(*m.ProductName)
+	product := s.productRepo.ReadName(m.ProductName)
 	var err error
 
 	if product == nil {
@@ -39,7 +40,7 @@ func (s ServicesFuncs) ProcessRequest(m models.Request) {
 			//dead letter que logic here
 		}
 
-		product = s.productRepo.ReadName(*m.ProductName) //update product so no null pointer dereference at merchantproduct
+		product = s.productRepo.ReadName(m.ProductName) //update product so no null pointer dereference at merchantproduct
 	} else {
 		//product exists, don't update popularity and urgency, update rest
 		err = s.productRepo.UpdateProduct(m)
@@ -50,8 +51,11 @@ func (s ServicesFuncs) ProcessRequest(m models.Request) {
 	}
 
 	//check if merchantProduct exists, if no add, if yes, update
-	merchant := s.merchantRepo.ReadName(*m.StoreName)
-	merchantProduct := s.merchantProductRepo.Read(merchant.ID, product.ID)
+	var merchantProduct *models.MerchantProduct = nil
+	merchant := s.merchantRepo.ReadName(m.StoreName)
+	if merchant != nil && product != nil {
+		merchantProduct = s.merchantProductRepo.Read(merchant.ID, product.ID)
+	}
 
 	if merchantProduct == nil {
 		//merchantProduct nonexistent, write new merchantproduct

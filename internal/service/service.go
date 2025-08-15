@@ -26,14 +26,20 @@ type MerchantProductRepositoryInterface interface {
 	UpdateMerchantProduct(req models.Request, productId int, merchantId int) error
 }
 
+type metricsInterface interface {
+	IncrementActiveWorkerCount()
+	DecrementActiveWorkerCount()
+}
+
 type ServicesFuncs struct {
 	ctx                 context.Context
 	client              ClientServiceInterface
 	productRepo         ProductRepositoryInterface
 	merchantRepo        MerchantRepositoryInterface
 	merchantProductRepo MerchantProductRepositoryInterface
+	metrics metricsInterface
 }
 
-func NewServicesFuncs(context context.Context, client ClientServiceInterface, productRepo ProductRepositoryInterface, merchantRepo MerchantRepositoryInterface, merchantProductRepo MerchantProductRepositoryInterface) ServicesFuncs {
-	return ServicesFuncs{ctx: context, client: client, productRepo: productRepo, merchantRepo: merchantRepo, merchantProductRepo: merchantProductRepo}
+func NewServicesFuncs(context context.Context, client ClientServiceInterface, productRepo ProductRepositoryInterface, merchantRepo MerchantRepositoryInterface, merchantProductRepo MerchantProductRepositoryInterface, metrics metricsInterface) ServicesFuncs {
+	return ServicesFuncs{ctx: context, client: client, productRepo: productRepo, merchantRepo: merchantRepo, merchantProductRepo: merchantProductRepo, metrics: metrics}
 }

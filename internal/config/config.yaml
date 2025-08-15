@@ -1,0 +1,14 @@
+queue_params:
+  queue_addr: "127.0.0.1:6379"
+  queue_pass: ""
+  queue_num: 0
+  queue_protocol: 2
+server_params:
+  listen_port: ":3600"
+db_params:
+  host: localhost
+  user: user
+  password: pass
+  name: cimrique_pgdb
+  port: 5432
+
